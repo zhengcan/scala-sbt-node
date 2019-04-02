@@ -102,7 +102,8 @@ RUN \
   echo 'addSbtPlugin("org.foundweekends.giter8" % "sbt-giter8-scaffold" % "0.11.0")' >> project/scaffold.sbt && \
   echo "scalaVersion := \"${SCALA_VERSION}\"" >> build.sbt && \
   echo "lazy val root = (project in file(\".\").enablePlugins(PlayJava, PlayEbean).settings(libraryDependencies ++= Seq(guice, caffeine))" >> build.sbt && \
-  echo "case object Temp" > Temp.scala && \
+  mkdir app && \
+  echo "case object Temp" > app/Temp.scala && \
   sbt dist && \
   cd .. && rm -rf warmup
 
