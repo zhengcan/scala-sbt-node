@@ -20,7 +20,11 @@ RUN \
   dpkg -i sbt-$SBT_VERSION.deb && \
   rm sbt-$SBT_VERSION.deb && \
   apt-get update && \
-  apt-get install sbt
+  apt-get install sbt && \
+  # Coursier
+  mkdir -p ~/.sbt/1.0/plugins && \
+  echo 'addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.1.0-M13")' > ~/.sbt/1.0/plugins/plugins.sbt && \
+  echo 'classpathTypes += "maven-plugin"' > ~/.sbt/1.0/sbt-coursier.sbt
 
 # Node
 RUN \
@@ -89,12 +93,17 @@ RUN if [ "$INIT_SCRIPT" != "" ]; then \
 
 # WarmUp
 RUN \
-  sbt sbtVersion && \
+  mkdir warmup && cd warmup \
   mkdir project && \
-  echo "scalaVersion := \"${SCALA_VERSION}\"" > build.sbt && \
-  echo "sbt.version=${SBT_VERSION}" > project/build.properties && \
+  echo "sbt.version=${SBT_VERSION}" >> project/build.properties && \
+  echo 'addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.7.0")' >> project/plugins.sbt && \
+  echo 'addSbtPlugin("com.typesafe.sbt" % "sbt-play-ebean" % "5.0.1")' >> project/plugins.sbt && \
+  echo 'addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.19")' >> project/plugins.sbt && \
+  echo 'addSbtPlugin("org.foundweekends.giter8" % "sbt-giter8-scaffold" % "0.11.0")' >> project/scaffold.sbt && \
+  echo "scalaVersion := \"${SCALA_VERSION}\"" >> build.sbt && \
+  echo "lazy val root = (project in file(\".\").enablePlugins(PlayJava, PlayEbean).settings(libraryDependencies ++= Seq(guice, caffeine))" >> build.sbt && \
   echo "case object Temp" > Temp.scala && \
-  sbt compile && \
-  rm -r project && rm build.sbt && rm Temp.scala && rm -r target
+  sbt dist && \
+  cd .. && rm -rf warmup
 
 WORKDIR /root
