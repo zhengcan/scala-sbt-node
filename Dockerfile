@@ -93,7 +93,7 @@ RUN if [ "$INIT_SCRIPT" != "" ]; then \
 
 # WarmUp
 RUN \
-  mkdir warmup && cd warmup \
+  mkdir warmup && cd warmup && \
   mkdir project && \
   echo "sbt.version=${SBT_VERSION}" >> project/build.properties && \
   echo 'addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.7.0")' >> project/plugins.sbt && \
