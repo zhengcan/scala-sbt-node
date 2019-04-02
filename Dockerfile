@@ -101,7 +101,7 @@ RUN \
   echo 'addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.19")' >> project/plugins.sbt && \
   echo 'addSbtPlugin("org.foundweekends.giter8" % "sbt-giter8-scaffold" % "0.11.0")' >> project/scaffold.sbt && \
   echo "scalaVersion := \"${SCALA_VERSION}\"" >> build.sbt && \
-  echo "lazy val root = (project in file(\".\").enablePlugins(PlayJava, PlayEbean).settings(libraryDependencies ++= Seq(guice, caffeine))" >> build.sbt && \
+  echo "lazy val root = (project in file(\".\")).enablePlugins(PlayJava, PlayEbean).settings(libraryDependencies ++= Seq(guice, caffeine))" >> build.sbt && \
   mkdir app && \
   echo "case object Temp" > app/Temp.scala && \
   sbt dist && \
