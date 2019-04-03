@@ -86,6 +86,10 @@ RUN \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
 
+# Tools
+RUN	\
+  apt-get install vim dnsutils
+
 # Init
 RUN if [ "$INIT_SCRIPT" != "" ]; then \
   sh -c "$(curl -fsSL $INIT_SCRIPT)"; \
