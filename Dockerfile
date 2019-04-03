@@ -90,7 +90,7 @@ RUN \
 
 # Tools
 RUN	\
-  apt-get install vim dnsutils
+  apt-get install vim dnsutils --yes
 
 # Init
 RUN if [ "$INIT_SCRIPT" != "" ]; then \
