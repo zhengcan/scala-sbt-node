@@ -4,6 +4,7 @@ FROM openjdk:8-stretch
 # Environment
 ARG SCALA_VERSION=2.12.8
 ARG SBT_VERSION=1.2.8
+ARG SBT_COURSIER_VERSION=1.1.0-M13-2
 ARG NODE_VERSION=10.15.3
 ARG YARN_VERSION=1.13.0
 ARG INIT_SCRIPT
@@ -23,8 +24,9 @@ RUN \
   apt-get install sbt && \
   # Coursier
   mkdir -p ~/.sbt/1.0/plugins && \
-  echo 'addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.1.0-M13")' > ~/.sbt/1.0/plugins/plugins.sbt && \
-  echo 'classpathTypes += "maven-plugin"' > ~/.sbt/1.0/sbt-coursier.sbt
+  echo "addSbtPlugin(\"io.get-coursier\" % \"sbt-coursier\" % \"$SBT_COURSIER_VERSION\")" >> ~/.sbt/1.0/plugins/plugins.sbt && \
+  echo 'import coursier.Keys._' >> ~/.sbt/1.0/sbt-coursier.sbt
+  echo 'classpathTypes += "maven-plugin"' >> ~/.sbt/1.0/sbt-coursier.sbt
 
 # Node
 RUN \
