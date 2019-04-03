@@ -25,7 +25,6 @@ RUN \
   # Coursier
   mkdir -p ~/.sbt/1.0/plugins && \
   echo "addSbtPlugin(\"io.get-coursier\" % \"sbt-coursier\" % \"$SBT_COURSIER_VERSION\")" >> ~/.sbt/1.0/plugins/plugins.sbt && \
-  echo 'import coursier.Keys._' >> ~/.sbt/1.0/sbt-coursier.sbt && \
   echo 'classpathTypes += "maven-plugin"' >> ~/.sbt/1.0/sbt-coursier.sbt
 
 # Node
@@ -88,9 +87,10 @@ RUN \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
 
-# Tools
+# More Tools
 RUN	\
-  apt-get install vim dnsutils --yes
+  apt-get install vim dnsutils --yes && \
+  npm i -g lerna
 
 # Init
 RUN if [ "$INIT_SCRIPT" != "" ]; then \
