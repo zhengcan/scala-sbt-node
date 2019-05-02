@@ -102,7 +102,7 @@ RUN \
   mkdir warmup && cd warmup && \
   mkdir project && \
   echo "sbt.version=${SBT_VERSION}" >> project/build.properties && \
-  echo 'addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.7.0")' >> project/plugins.sbt && \
+  echo 'addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.7.1")' >> project/plugins.sbt && \
   echo 'addSbtPlugin("com.typesafe.sbt" % "sbt-play-ebean" % "5.0.1")' >> project/plugins.sbt && \
   echo 'addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.19")' >> project/plugins.sbt && \
   echo 'addSbtPlugin("org.foundweekends.giter8" % "sbt-giter8-scaffold" % "0.11.0")' >> project/scaffold.sbt && \
