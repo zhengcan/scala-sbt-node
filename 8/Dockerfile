@@ -1,5 +1,5 @@
 # Import OpenJDK
-FROM openjdk:11-stretch
+FROM openjdk:8-stretch
 
 # Environment
 ARG SCALA_VERSION=2.12.8
