@@ -1,5 +1,5 @@
 # Import OpenJDK
-ARG JDK_VERSION=8-stretch
+ARG JDK_VERSION=11-stretch
 FROM openjdk:${JDK_VERSION}
 
 # Environment
