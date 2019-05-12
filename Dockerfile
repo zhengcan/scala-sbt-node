@@ -1,15 +1,16 @@
 # Import OpenJDK
-FROM openjdk:8-stretch
+ARG JDK_VERSION=8-stretch
+FROM openjdk:${JDK_VERSION}
 
 # Environment
 ARG SCALA_VERSION=2.12.8
 ARG SBT_VERSION=1.2.8
-ARG SBT_COURSIER_VERSION=1.1.0-M13-2
+ARG SBT_COURSIER_VERSION=1.1.0-M14-4
 ARG NODE_VERSION=10.15.3
-ARG YARN_VERSION=1.13.0
+ARG YARN_VERSION=1.16.0
 ARG INIT_SCRIPT
 
-# Scala
+# Scalar
 RUN \
   curl -fsL https://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C /root/ && \
   echo >> /root/.bashrc && \
@@ -90,7 +91,8 @@ RUN \
 # More Tools
 RUN	\
   apt-get install vim dnsutils --yes && \
-  npm i -g lerna
+  npm i -g lerna && \
+  npm i -g --unsafe-perm=true --allow-root expo-cli
 
 # Init
 RUN if [ "$INIT_SCRIPT" != "" ]; then \
@@ -105,6 +107,7 @@ RUN \
   echo 'addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.7.1")' >> project/plugins.sbt && \
   echo 'addSbtPlugin("com.typesafe.sbt" % "sbt-play-ebean" % "5.0.1")' >> project/plugins.sbt && \
   echo 'addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.19")' >> project/plugins.sbt && \
+  echo 'addSbtPlugin("com.lightbend.akka.grpc" % "sbt-akka-grpc" % "0.6.1")' >> project/plugins.sbt && \
   echo 'addSbtPlugin("org.foundweekends.giter8" % "sbt-giter8-scaffold" % "0.11.0")' >> project/scaffold.sbt && \
   echo "scalaVersion := \"${SCALA_VERSION}\"" >> build.sbt && \
   echo "lazy val root = (project in file(\".\")).enablePlugins(PlayJava, PlayEbean).settings(libraryDependencies ++= Seq(guice, caffeine))" >> build.sbt && \
