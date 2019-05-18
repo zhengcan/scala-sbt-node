@@ -5,7 +5,7 @@ This image includes:
 - scala 2.12.8, 2.12.7
 - sbt 1.2.8
 - coursier 1.1.0-M14-2
-- node 12.2.0
+- node 10.15.3
 - yarn 1.16.0
 - lerna
 - expo-cli
