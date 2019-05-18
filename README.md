@@ -2,10 +2,10 @@
 
 This image includes:
 - openjdk:11-stretch
-- scala 2.12.8
+- scala 2.12.8, 2.12.7
 - sbt 1.2.8
-- coursier 1.1.0-M14-4
-- node 10.15.3
+- coursier 1.1.0-M14-2
+- node 12.2.0
 - yarn 1.16.0
 - lerna
 - expo-cli
