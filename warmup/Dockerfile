@@ -1,6 +1,6 @@
 # Dockerfile Template #
 
-FROM zhengcan/scala-sbt-node:11
+FROM zhengcan/scala-sbt-node:11_base
 
 COPY ../warmup warmup
 
