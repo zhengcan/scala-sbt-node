@@ -1,5 +1,8 @@
 #!/bin/bash
 
+mkdir 8
+mkdir 11
+
 # Base Images
 sed -e 's/FROM .*/FROM openjdk:8-stretch/g' -e 's/# Dockerfile Template #/# Auto Generated File#/g' Dockerfile > 8/Dockerfile_base
 sed -e 's/FROM .*/FROM openjdk:11-stretch/g' -e 's/# Dockerfile Template #/# Auto Generated File#/g' Dockerfile > 11/Dockerfile_base

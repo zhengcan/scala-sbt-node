@@ -2,7 +2,7 @@
 
 FROM zhengcan/scala-sbt-node:11_base
 
-COPY ../warmup warmup
+COPY ./warmup warmup
 
 RUN \
   ./warmup/expo-cli/build.sh && \
