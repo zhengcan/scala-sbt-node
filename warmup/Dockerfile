@@ -2,13 +2,11 @@
 
 FROM zhengcan/scala-sbt-node:11
 
-COPY . warmup
+COPY ../warmup warmup
 
 RUN \
-  ls -l && \
   ./warmup/expo-cli/build.sh && \
   ./warmup/play-2.7.1/build.sh && \
   ./warmup/play-2.7.2/build.sh && \
-  rm -rf ./warmup && \
-  ls -l \
+  rm -rf ./warmup
 

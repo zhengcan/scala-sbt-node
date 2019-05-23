@@ -2,7 +2,7 @@
 
 FROM zhengcan/scala-sbt-node:11
 
-COPY . warmup
+COPY ../warmup warmup
 
 RUN \
   ls -l && \
