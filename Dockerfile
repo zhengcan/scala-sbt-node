@@ -1,4 +1,4 @@
-# Auto Generated File#
+# Dockerfile Template #
 
 # Import OpenJDK
 FROM openjdk:11-stretch
