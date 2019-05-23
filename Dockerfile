@@ -93,6 +93,5 @@ RUN \
 RUN	\
   apt-get install vim dnsutils --yes && \
   npm i -g lerna
-  echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p
 
 WORKDIR /root
