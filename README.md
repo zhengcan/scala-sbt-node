@@ -20,9 +20,22 @@ docker pull zhengcan/scala-sbt-node
 
 ## Tags
 
-- `latest`
-- `11`
-    - openjdk:11-stretch
+- `11-base`
+  - openjdk:11-stretch
+- `8-base`
+  - openjdk:8-stretch
+- `11`, `latest`
+  - openjdk:11-stretch
+  - cache Play 2.7.1 & Play 2.7.2
 - `8`
-    - openjdk:8-stretch
+  - openjdk:8-stretch
+  - cache Play 2.7.1 & Play 2.7.2
+- `11-expo`
+  - openjdk:11-stretch
+  - cache Play 2.7.1 & Play 2.7.2
+  - cache Expo
+- `8-expo`
+  - openjdk:8-stretch
+  - cache Play 2.7.1 & Play 2.7.2
+  - cache Expo
 
