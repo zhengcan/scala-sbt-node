@@ -10,11 +10,11 @@ ARG SBT_COURSIER_VERSION=1.1.0-M14-2
 ARG NODE_VERSION=10.15.3
 ARG YARN_VERSION=1.16.0
 
-# Scalar
+# Scala
 RUN \
-  curl -fsL https://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C /root/ && \
+  curl -fsL https://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C /usr/lib/ && \
   echo >> /root/.bashrc && \
-  echo "export PATH=~/scala-$SCALA_VERSION/bin:$PATH" >> /root/.bashrc
+  echo "export PATH=/usr/lib/scala-$SCALA_VERSION/bin:$PATH" >> /root/.bashrc
 
 # Sbt
 RUN \
@@ -91,6 +91,7 @@ RUN \
 # More
 RUN	\
   apt-get install vim dnsutils --yes && \
-  npm i -g lerna
+  npm i -g npm lerna && \
+  echo "alias ll='ls -la'" >> /root/.bashrc
 
 WORKDIR /root

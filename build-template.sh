@@ -13,5 +13,3 @@ sed -e 's/FROM .*/FROM zhengcan\/scala-sbt-node:11_base/g' -e 's/# Dockerfile Te
 
 
 
-
-

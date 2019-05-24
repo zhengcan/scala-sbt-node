@@ -6,8 +6,8 @@ COPY ./warmup warmup
 
 RUN \
   cd ./warmup/ && \
-  cd ./expo-cli/ && ./build.sh && cd .. && \
-  cd ./play-2.7.1/ && ./build.sh && cd .. && \
-  cd ./play-2.7.2/ && ./build.sh && cd .. && \
+  cd ./expo-cli/ && (./build.sh || true) && cd .. && \
+  cd ./play-2.7.1/ && (./build.sh || true) && cd .. && \
+  cd ./play-2.7.2/ && (./build.sh || true) && cd .. && \
   rm -rf ./warmup
 
