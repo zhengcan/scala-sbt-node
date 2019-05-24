@@ -90,7 +90,7 @@ RUN \
 
 # More
 RUN	\
-  apt-get install vim dnsutils --yes && \
+  apt-get install vim dnsutils aria2 --yes && \
   npm i -g npm lerna && \
   echo "alias ll='ls -la'" >> /root/.bashrc
 
