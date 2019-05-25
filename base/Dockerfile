@@ -39,12 +39,12 @@ RUN \
   echo "addSbtPlugin(\"io.get-coursier\" % \"sbt-coursier\" % \"$SBT_COURSIER_VERSION\")" >> ~/.sbt/1.0/plugins/plugins.sbt && \
   echo 'classpathTypes += "maven-plugin"' >> ~/.sbt/1.0/sbt-coursier.sbt && \
   # Warm Up
-  mkdir -p ./tmp/project ./tmp/app && cd ./tmp && \
+  mkdir -p ./tmp/project ./tmp/src/main/scala && cd ./tmp && \
   echo "sbt.version=$SBT_VERSION" >> project/build.properties && \
   echo 'scalaVersion := "2.12.7"' >> build.sbt && \
   echo 'crossScalaVersions := Seq("2.12.7", "2.12.8")' >> build.sbt && \
   echo 'lazy val root = (project in file("."))' >> build.sbt && \
-  echo 'case object Temp;' >> app/Temp.scala && \
+  echo 'case object Temp;' >> src/main/scala/Temp.scala && \
   sbt +compile && \
   cd .. && rm -rf ./tmp
 
