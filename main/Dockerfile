@@ -1,0 +1,57 @@
+# Dockerfile Template #
+
+FROM zhengcan/scala-sbt-node:11-base
+
+ENV SBT_VERSION 1.2.8
+ENV SCALA_VERSION 2.12.8
+ENV SCALA_VERSION_MORE 2.12.7
+#ENV AKKA_VERSION 2.5.23
+#ENV AKKA_HTTP_VERSION 10.1.8
+
+# Play
+RUN \
+  mkdir -p ./play/project ./play/app ./play/conf && cd ./play && \
+  echo 'sbt.version='${SBT_VERSION}'' >> project/build.properties && \
+  echo 'scalaVersion := "'${SCALA_VERSION}'"' >> build.sbt && \
+  echo 'crossScalaVersions := Seq("'${SCALA_VERSION}'", "'${SCALA_VERSION_MORE}'")' >> build.sbt && \
+  echo 'lazy val root = (project in file("."))' >> build.sbt && \
+  echo '.enablePlugins(PlayJava, PlayEbean)' >> build.sbt && \
+  echo '.settings(' >> build.sbt && \
+  echo '  libraryDependencies ++= Seq(' >> build.sbt && \
+#  echo '    guice, caffeine,' >> build.sbt && \
+#  echo '    "com.typesafe.akka" %% "akka-actor" % "'${AKKA_VERSION}'",' >> build.sbt && \
+#  echo '    "com.typesafe.akka" %% "akka-stream" % "'${AKKA_VERSION}'",' >> build.sbt && \
+#  echo '    "com.typesafe.akka" %% "akka-cluster" % "'${AKKA_VERSION}'",' >> build.sbt && \
+#  echo '    "com.typesafe.akka" %% "akka-cluster-sharding" % "'${AKKA_VERSION}'",' >> build.sbt && \
+#  echo '    "com.typesafe.akka" %% "akka-cluster-tools" % "'${AKKA_VERSION}'",' >> build.sbt && \
+#  echo '    "com.typesafe.akka" %% "akka-distributed-data" % "'${AKKA_VERSION}'",' >> build.sbt && \
+#  echo '    "com.typesafe.akka" %% "akka-persistence" % "'${AKKA_VERSION}'",' >> build.sbt && \
+#  echo '    "com.typesafe.akka" %% "akka-discovery" % "'${AKKA_VERSION}'",' >> build.sbt && \
+#  echo '    "com.typesafe.akka" %% "akka-http" % "'${AKKA_HTTP_VERSION}'",' >> build.sbt && \
+  echo '  ),' >> build.sbt && \
+  echo ')' >> build.sbt && \
+  echo 'case object Temp;' >> app/Temp.scala && \
+# 2.6.23
+  echo 'addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.23")' >> project/plugins.sbt && \
+  echo 'addSbtPlugin("com.typesafe.sbt" % "sbt-play-ebean" % "4.1.3")' >> project/plugins.sbt && \
+  echo 'addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.21")' >> project/plugins.sbt && \
+  sbt clean update && \
+  sbt +compile && \
+## 2.7.1
+#  echo 'addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.7.1")' >> project/plugins.sbt && \
+#  echo 'addSbtPlugin("com.typesafe.sbt" % "sbt-play-ebean" % "5.0.1")' >> project/plugins.sbt && \
+#  echo 'addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.21")' >> project/plugins.sbt && \
+#  echo 'addSbtPlugin("com.lightbend.akka.grpc" % "sbt-akka-grpc" % "0.6.1")' >> project/plugins.sbt && \
+#  sbt clean update && \
+#  sbt +compile && \
+# 2.7.2
+  echo 'addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.7.2")' >> project/plugins.sbt && \
+  echo 'addSbtPlugin("com.typesafe.sbt" % "sbt-play-ebean" % "5.0.1")' >> project/plugins.sbt && \
+  echo 'addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.21")' >> project/plugins.sbt && \
+  echo 'addSbtPlugin("com.lightbend.akka.grpc" % "sbt-akka-grpc" % "0.6.1")' >> project/plugins.sbt && \
+  sbt clean update && \
+  sbt +compile && \
+# Cleanup
+  cd .. && rm -rf ./play
+
+

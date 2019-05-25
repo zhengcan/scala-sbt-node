@@ -1,6 +1,6 @@
 *.iml
 *.bak
+*.log
 
 project/project/
 target/
-warmup/*/build.sbt

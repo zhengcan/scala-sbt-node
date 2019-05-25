@@ -29,15 +29,15 @@ RUN \
   aria2c --max-connection-per-server=4 --min-split-size=1M https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz && \
   tar xfz sbt-$SBT_VERSION.tgz -C /opt/ && \
   rm sbt-$SBT_VERSION.tgz && \
-  ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt
-RUN \
+  ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt && \
   # Install Preloaded
   mkdir -p ~/.ivy2/local && \
   mv /opt/sbt/lib/local-preloaded/* ~/.ivy2/local && \
   # Coursier
   mkdir -p ~/.sbt/1.0/plugins && \
   echo "addSbtPlugin(\"io.get-coursier\" % \"sbt-coursier\" % \"$SBT_COURSIER_VERSION\")" >> ~/.sbt/1.0/plugins/plugins.sbt && \
-  echo 'classpathTypes += "maven-plugin"' >> ~/.sbt/1.0/sbt-coursier.sbt && \
+  echo 'classpathTypes += "maven-plugin"' >> ~/.sbt/1.0/sbt-coursier.sbt
+RUN \
   # Warm Up
   mkdir -p ./tmp/project ./tmp/src/main/scala && cd ./tmp && \
   echo "sbt.version=$SBT_VERSION" >> project/build.properties && \
