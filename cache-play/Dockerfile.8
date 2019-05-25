@@ -6,8 +6,8 @@ FROM zhengcan/scala-sbt-node:8-base
 RUN \
   mkdir -p ./play/project ./play/app ./play/conf && cd ./play && \
   echo 'sbt.version=1.2.8' >> project/build.properties && \
-  echo 'scalaVersion := "2.11.8"' >> build.sbt && \
-  echo 'crossScalaVersions := Seq("2.11.8", "2.11.7")' >> build.sbt && \
+  echo 'scalaVersion := "2.12.8"' >> build.sbt && \
+  echo 'crossScalaVersions := Seq("2.12.8", "2.12.7")' >> build.sbt && \
   echo 'lazy val root = (project in file("."))' >> build.sbt && \
   echo '.enablePlugins(PlayJava, PlayEbean)' >> build.sbt && \
   echo '.settings(' >> build.sbt && \

@@ -10,29 +10,46 @@ ARG SBT_COURSIER_VERSION=1.1.0-M14-2
 ARG NODE_VERSION=10.15.3
 ARG YARN_VERSION=1.16.0
 
+# Tools
+RUN	\
+  apt-get update && apt-get install vim dnsutils aria2 --yes && \
+  echo "alias ll='ls -la'" >> ~/.bashrc && \
+  mkdir -p /opt
+
 # Scala
 RUN \
-  curl -fsL https://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C /usr/lib/ && \
-  echo >> /root/.bashrc && \
-  echo "export PATH=/usr/lib/scala-$SCALA_VERSION/bin:$PATH" >> /root/.bashrc
+  aria2c --max-connection-per-server=4 --min-split-size=1M https://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz && \
+  tar xfz scala-$SCALA_VERSION.tgz -C /opt/ && \
+  rm scala-$SCALA_VERSION.tgz && \
+  echo >> ~/.bashrc && \
+  echo "export PATH=/opt/scala-$SCALA_VERSION/bin:$PATH" >> ~/.bashrc
 
 # Sbt
 RUN \
-  curl -L -o sbt-$SBT_VERSION.deb https://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb && \
-  dpkg -i sbt-$SBT_VERSION.deb && \
-  rm sbt-$SBT_VERSION.deb && \
-  apt-get update && \
-  apt-get install sbt && \
+  aria2c --max-connection-per-server=4 --min-split-size=1M https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz && \
+  tar xfz sbt-$SBT_VERSION.tgz -C /opt/ && \
+  rm sbt-$SBT_VERSION.tgz && \
+  ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt && \
+  # Install Preloaded
+  mkdir -p ~/.ivy2/local && \
+  mv /opt/sbt/lib/local-preloaded/* ~/.ivy2/local && \
   # Coursier
   mkdir -p ~/.sbt/1.0/plugins && \
   echo "addSbtPlugin(\"io.get-coursier\" % \"sbt-coursier\" % \"$SBT_COURSIER_VERSION\")" >> ~/.sbt/1.0/plugins/plugins.sbt && \
-  echo 'classpathTypes += "maven-plugin"' >> ~/.sbt/1.0/sbt-coursier.sbt
+  echo 'classpathTypes += "maven-plugin"' >> ~/.sbt/1.0/sbt-coursier.sbt && \
+  # Warm Up
+  mkdir -p ./tmp/project ./tmp/app && cd ./tmp && \
+  echo "sbt.version=$SBT_VERSION" >> project/build.properties && \
+  echo 'scalaVersion := "2.12.7"' >> build.sbt && \
+  echo 'crossScalaVersion := Seq("2.12.7", "2.12.8")' >> build.sbt && \
+  echo 'lazy val root = (project in file("."))' >> build.sbt && \
+  echo 'case object Temp;' >> app/Temp.scala && \
+  sbt +compile && \
+  cd .. && rm -rf ./tmp
 
 # Node
 RUN \
-  groupadd --gid 1000 node \
-  && useradd --uid 1000 --gid node --shell /bin/bash --create-home node \
-  && ARCH= && dpkgArch="$(dpkg --print-architecture)" \
+  ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && case "${dpkgArch##*-}" in \
     amd64) ARCH='x64';; \
     ppc64el) ARCH='ppc64le';; \
@@ -61,13 +78,17 @@ RUN \
     gpg --batch --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys "$key" || \
     gpg --batch --keyserver hkp://pgp.mit.edu:80 --recv-keys "$key" ; \
   done \
-  && curl -fsSLO --compressed "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-$ARCH.tar.xz" \
-  && curl -fsSLO --compressed "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
+  && aria2c --max-connection-per-server=4 --min-split-size=1M "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-$ARCH.tar.xz" \
+  && aria2c --max-connection-per-server=4 --min-split-size=1M "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
   && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc \
   && grep " node-v$NODE_VERSION-linux-$ARCH.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
   && tar -xJf "node-v$NODE_VERSION-linux-$ARCH.tar.xz" -C /usr/local --strip-components=1 --no-same-owner \
   && rm "node-v$NODE_VERSION-linux-$ARCH.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs
+
+# Npm & Lerna
+RUN \
+  npm i -g npm lerna
 
 # Yarn
 RUN \
@@ -79,19 +100,12 @@ RUN \
     gpg --batch --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys "$key" || \
     gpg --batch --keyserver hkp://pgp.mit.edu:80 --recv-keys "$key" ; \
   done \
-  && curl -fsSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz" \
-  && curl -fsSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz.asc" \
+  && aria2c --max-connection-per-server=4 --min-split-size=1M "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz" \
+  && aria2c --max-connection-per-server=4 --min-split-size=1M "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz.asc" \
   && gpg --batch --verify yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz \
-  && mkdir -p /opt \
   && tar -xzf yarn-v$YARN_VERSION.tar.gz -C /opt/ \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
-
-# More
-RUN	\
-  apt-get install vim dnsutils aria2 --yes && \
-  npm i -g npm lerna && \
-  echo "alias ll='ls -la'" >> /root/.bashrc
 
 WORKDIR /root
