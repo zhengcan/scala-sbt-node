@@ -29,7 +29,8 @@ RUN \
   aria2c --max-connection-per-server=4 --min-split-size=1M https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz && \
   tar xfz sbt-$SBT_VERSION.tgz -C /opt/ && \
   rm sbt-$SBT_VERSION.tgz && \
-  ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt && \
+  ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt
+RUN \
   # Install Preloaded
   mkdir -p ~/.ivy2/local && \
   mv /opt/sbt/lib/local-preloaded/* ~/.ivy2/local && \
