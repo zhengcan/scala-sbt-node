@@ -41,7 +41,7 @@ RUN \
   mkdir -p ./tmp/project ./tmp/app && cd ./tmp && \
   echo "sbt.version=$SBT_VERSION" >> project/build.properties && \
   echo 'scalaVersion := "2.12.7"' >> build.sbt && \
-  echo 'crossScalaVersion := Seq("2.12.7", "2.12.8")' >> build.sbt && \
+  echo 'crossScalaVersions := Seq("2.12.7", "2.12.8")' >> build.sbt && \
   echo 'lazy val root = (project in file("."))' >> build.sbt && \
   echo 'case object Temp;' >> app/Temp.scala && \
   sbt +compile && \
