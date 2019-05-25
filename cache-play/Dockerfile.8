@@ -21,7 +21,7 @@ RUN \
   echo 'addSbtPlugin("com.lightbend.akka.grpc" % "sbt-akka-grpc" % "0.6.1")' >> project/plugins.sbt && \
   echo 'addSbtPlugin("org.foundweekends.giter8" % "sbt-giter8-scaffold" % "0.11.0")' >> project/plugins.sbt && \
   sbt clean update && \
-  sbt compile && \
+  sbt +compile && \
 # 2.7.2
   echo 'addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.7.2")' >> project/plugins.sbt && \
   echo 'addSbtPlugin("com.typesafe.sbt" % "sbt-play-ebean" % "5.0.1")' >> project/plugins.sbt && \
@@ -29,7 +29,7 @@ RUN \
   echo 'addSbtPlugin("com.lightbend.akka.grpc" % "sbt-akka-grpc" % "0.6.1")' >> project/plugins.sbt && \
   echo 'addSbtPlugin("org.foundweekends.giter8" % "sbt-giter8-scaffold" % "0.11.0")' >> project/plugins.sbt && \
   sbt clean update && \
-  sbt compile && \
+  sbt +compile && \
 # Cleanup
   cd .. && rm -rf ./play
 
