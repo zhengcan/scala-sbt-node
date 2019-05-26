@@ -1,12 +1,9 @@
 # Dockerfile Template #
 
-# Import OpenJDK
-FROM openjdk:11-stretch
+# Import OpenJDK & Sbt
+FROM zhengcan/sbt:11-2.12.8
 
 # Environment
-ARG SCALA_VERSION=2.12.8
-ARG SBT_VERSION=1.2.8
-ARG SBT_COURSIER_VERSION=1.1.0-M14-2
 ARG NODE_VERSION=10.15.3
 ARG YARN_VERSION=1.16.0
 
@@ -15,38 +12,6 @@ RUN	\
   apt-get update && apt-get install vim dnsutils aria2 --yes && \
   echo "alias ll='ls -la'" >> ~/.bashrc && \
   mkdir -p /opt
-
-# Scala
-RUN \
-  aria2c --max-connection-per-server=4 --min-split-size=1M https://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz && \
-  tar xfz scala-$SCALA_VERSION.tgz -C /opt/ && \
-  rm scala-$SCALA_VERSION.tgz && \
-  echo >> ~/.bashrc && \
-  echo "export PATH=/opt/scala-$SCALA_VERSION/bin:$PATH" >> ~/.bashrc
-
-# Sbt
-RUN \
-  aria2c --max-connection-per-server=4 --min-split-size=1M https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz && \
-  tar xfz sbt-$SBT_VERSION.tgz -C /opt/ && \
-  rm sbt-$SBT_VERSION.tgz && \
-  ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt && \
-  # Install Preloaded
-  mkdir -p ~/.ivy2/local && \
-  mv /opt/sbt/lib/local-preloaded/* ~/.ivy2/local && \
-  # Coursier
-  mkdir -p ~/.sbt/1.0/plugins && \
-  echo "addSbtPlugin(\"io.get-coursier\" % \"sbt-coursier\" % \"$SBT_COURSIER_VERSION\")" >> ~/.sbt/1.0/plugins/plugins.sbt && \
-  echo 'classpathTypes += "maven-plugin"' >> ~/.sbt/1.0/sbt-coursier.sbt
-RUN \
-  # Warm Up
-  mkdir -p ./tmp/project ./tmp/src/main/scala && cd ./tmp && \
-  echo "sbt.version=$SBT_VERSION" >> project/build.properties && \
-  echo 'scalaVersion := "2.12.7"' >> build.sbt && \
-  echo 'crossScalaVersions := Seq("2.12.7", "2.12.8")' >> build.sbt && \
-  echo 'lazy val root = (project in file("."))' >> build.sbt && \
-  echo 'case object Temp;' >> src/main/scala/Temp.scala && \
-  sbt +compile && \
-  cd .. && rm -rf ./tmp
 
 # Node
 RUN \

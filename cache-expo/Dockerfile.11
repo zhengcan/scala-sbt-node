@@ -1,4 +1,4 @@
-# Auto Generated File#
+# Auto Generated #
 
 FROM zhengcan/scala-sbt-node:11
 
