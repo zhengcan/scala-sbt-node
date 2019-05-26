@@ -1,7 +1,7 @@
 # Auto Generated #
 
 # Import OpenJDK & Sbt
-FROM zhengcan/sbt:11-2.12.8
+FROM zhengcan/sbt:11-1.2.8
 
 # Environment
 ARG NODE_VERSION=10.15.3
