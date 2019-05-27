@@ -58,4 +58,6 @@ https://hub.docker.com/r/zhengcan/scala-sbt-node
 
 ```
 docker pull zhengcan/scala-sbt-node
+
+docker run -v `pwd`:/app zhengcan/scala-sbt-node sbt
 ```
