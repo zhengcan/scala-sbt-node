@@ -56,7 +56,7 @@ Tags:
 
 It includes:
 - all in main
-- expo-cli `2.19.3`
+- expo-cli `2.19.4`
 
 Tags:
 - `11-expo`
