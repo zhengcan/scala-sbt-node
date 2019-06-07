@@ -2,6 +2,10 @@
 
 ./update.sh
 
+# Deps
+docker pull zhengcan/sbt:11-1.2.8
+docker pull zhengcan/sbt:8-1.2.8
+
 # Base Images
 docker build -f base/Dockerfile.11 --build-arg NODE_VERSION="12.4.0"  -t zhengcan/scala-sbt-node:11-base-node12 base
 docker build -f base/Dockerfile.11 --build-arg NODE_VERSION="10.16.0" -t zhengcan/scala-sbt-node:11-base-node10 base
