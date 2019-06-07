@@ -16,16 +16,24 @@ It includes:
 - scala `2.12.8`, `2.12.7`
 - sbt `1.2.8`
 - coursier `1.1.0-M14-2`
-- node `10.15.3`
+- node `10.16.0`, `12.4.0`
 - npm `6.9.0`
 - yarn `1.16.0`
-- lerna `3.4.11`
+- lerna `3.14.1`
 
 Tags:
-- `11-base`
+- `11-base-node12`, `11-base`
   - from `openjdk:11-stretch`
-- `8-base`
+  - node `12.x`
+- `11-base-node10`
+  - from `openjdk:11-stretch`
+  - node `10.x`
+- `8-base-node12`, `8-base`
   - from `openjdk:8-stretch`
+  - node `12.x`
+- `8-base-node10`
+  - from `openjdk:8-stretch`
+  - node `10.x`
 
 ### main
 
@@ -35,16 +43,20 @@ It includes:
   - Play Framework `2.6.23`, `2.7.2`
 
 Tags:
-- `11`, `latest`
+- `11-node12`, `11`, `latest`
   - from `11-base`
-- `8`
+- `11-node10`
+  - from `11-base`
+- `8-node12`, `8`
+  - from `8-base`
+- `8-node10`
   - from `8-base`
 
 ### with-expo
 
 It includes:
 - all in main
-- expo-cli `2.18.3`
+- expo-cli `2.19.3`
 
 Tags:
 - `11-expo`
